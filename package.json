@@ -1,0 +1,51 @@
+{
+  "name": "spoke",
+  "version": "0.0.1",
+  "description": "A framework and library for speech enabled applications",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/psaylor/spoke.git"
+  },
+  "keywords": [
+    "spoke",
+    "speech",
+    "recognition",
+    "enabled",
+    "automatic",
+    "sox",
+    "socket.io",
+    "streaming",
+    "audio",
+    "pronunciation",
+    "reading"
+  ],
+  "author": "Patricia Saylor <psaylor@mit.edu> (http://patriciasaylor.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/psaylor/spoke/issues"
+  },
+  "homepage": "https://github.com/psaylor/spoke",
+  "dependencies": {
+    "csv": "^0.4.1",
+    "debug": "^2.1.3",
+    "escape-delims": "^0.4.0",
+    "express": "~4.12.0",
+    "express-layout": "^0.1.0",
+    "extfs": "0.0.7",
+    "morgan": "~1.5.1",
+    "promise": "^6.1.0",
+    "ractive": "^0.6.1",
+    "ractive-render": "^0.3.1",
+    "socket.io": "^1.3.5",
+    "socket.io-stream": "^0.6.0",
+    "sox-audio": "^0.3.0",
+    "spoke-client": "git://github.com/psaylor/spoke-client",
+    "through": "^2.3.7",
+    "xml2js": "^0.4.6"
+  }
+}
