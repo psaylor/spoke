@@ -1,0 +1,4 @@
+This directory needs to be made executable.
+Run
+$ cd /path/to/spoke/scripts
+$ chmod +x ./*.sh
