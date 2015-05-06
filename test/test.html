@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+  <meta charset='utf-8'>
+  <title>Spoke Test</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <!-- Other Third Party Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.17/require.min.js" data-main="main.js"></script>
+  
+  <!-- My Files -->
+  <link rel="stylesheet" type="text/css" href="spoke.min.css">
+
+</head>
+<body>
+
+
+<div class="container">
+  <h1>Spoke Module Test</h1>
+
+  <h3>Audio Recording <span class="fa-stack align-bottom myVolumeMeter myRecordButton">
+    <i class="fa fa-microphone fa-stack-2x stroked stroked-blue"></i>
+    <i class="fa fa-microphone fa-stack-2x fill vol-adjust"></i>
+  </span></h3>
+
+  <h3>
+    Speech Recognition 
+    <span class="fa-stack align-bottom myVolumeMeter myRecognizeButton">
+      <i class="fa fa-microphone fa-stack-2x stroked stroked-green"></i>
+      <i class="fa fa-microphone fa-stack-2x fill vol-adjust"></i>
+    </span>
+    <small class="myRecognitionResults">
+    </small>
+</h3>
+
+  <div class="btn btn-lg btn-info myPlayBtn" data-playLength="short">Play Rain</div>
+  <div class="btn btn-lg btn-info myPlayBtn" data-playLength="long">Play Rain ++</div>
+
+</div>  <!-- End of container div -->
+
+</body>
+</html>
+

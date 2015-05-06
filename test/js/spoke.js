@@ -1,0 +1,1 @@
+../../node_modules/spoke-client/spoke.js
