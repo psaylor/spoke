@@ -1,0 +1,30 @@
+Decoding error candidates...
+iteration 1...
+iteration 2...
+iteration 3...
+Done error candidate selection
+  (computing from `run_make_misp_fst.ctl': 3 to compute)
+0: make_tag_lexicon_fst_with_rule.py tmp/tag_text_single_1.txt run_rules.txt tmp/tag_lexicon_1.fst.txt ; fstcompile --isymbols=data/tags.txt --osymbols=models/lang/phones.txt --keep_isymbols=false --keep_osymbols=false tmp/tag_lexicon_1.fst.txt | fstinvert - | fstarcsort --sort_type=olabel > fst/1.fst ;...
+1: make_tag_lexicon_fst_with_rule.py tmp/tag_text_single_2.txt run_rules.txt tmp/tag_lexicon_2.fst.txt ; fstcompile --isymbols=data/tags.txt --osymbols=models/lang/phones.txt --keep_isymbols=false --keep_osymbols=false tmp/tag_lexicon_2.fst.txt | fstinvert - | fstarcsort --sort_type=olabel > fst/2.fst ;...
+2: make_tag_lexicon_fst_with_rule.py tmp/tag_text_single_3.txt run_rules.txt tmp/tag_lexicon_3.fst.txt ; fstcompile --isymbols=data/tags.txt --osymbols=models/lang/phones.txt --keep_isymbols=false --keep_osymbols=false tmp/tag_lexicon_3.fst.txt | fstinvert - | fstarcsort --sort_type=olabel > fst/3.fst ;...
+---WORD STARTS---
+was w** w <eps>
+---WORD ENDS---
+---WORD STARTS---
+it i* ih <eps>
+---WORD ENDS---
+---WORD STARTS---
+warm *a** aa <eps>
+---WORD ENDS---
+---WORD SUMMARY STARTS---
+was w** w <eps>
+it i* ih <eps>
+warm *a** aa <eps>
+---WORD SUMMARY ENDS---
+---RULE SUMMARY STARTS---
+#_w_ah <eps>
+#_ih_t <eps>
+w_aa_r <eps>
+---RULE SUMMARY ENDS---
+Done mispronunciation detection
+time elapsed: 3 seconds

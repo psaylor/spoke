@@ -26,16 +26,9 @@ require(['jquery', 'spoke'],
         });
 
         /* Recorder Test */
-        var recordButtonElement = $(".myRecordButton");
+        var recordButtonElement = $('.myRecordButton');
         var recordButtonColorLayer = recordButtonElement.find('.fa-microphone.stroked');
         var recorder = spoke.Recorder(recordButtonElement);
-
-        // Can add listener either on the recordBtn passed in, or on the 
-        // recorder instance by first wrapping it as a jQuery object
-        // recordButtonElement.on('start.spoke.recorder', onStartEventData, 
-        //     function (event) {
-        //     console.log('Recording started for', event.data);
-        // });
 
         recorder.on('start.spoke.recorder', {}, function (e) {
             console.log('Started spoke recorder:', e);
@@ -45,6 +38,68 @@ require(['jquery', 'spoke'],
         recorder.on('stop.spoke.recorder', {}, function (e) {
             console.log('Stopped spoke recorder:', e);
             recordButtonColorLayer.toggleClass('stroked-blue stroked-red');
+        });
+
+        socket.on('success.spoke.recorder', function (filename) {
+            console.log('Got recorder success status from server:', filename);
+        });
+        socket.on('error.spoke.recorder', function (err) {
+            console.log('Got recorder error status from server:', err);
+        });
+
+        /* Custom recognizer event handlers */
+        var customResultsElement = $('#demo1 .myRecognitionResults');
+        socket.on('result.spoke.recognizer', function (result) {
+            console.log('Result from custom speech recognition:', result);
+            customResultsElement.text(result);
+        });
+        socket.on('error.spoke.recognizer', function (err) {
+            console.log('Error during custom speech recognition:', err);
+            customResultsElement.text('Error');
+        });
+
+        /* Custom forced alignment event handlers */
+        var alignmentText = spoke.utils.normalizeString($('#alignmentText').html());
+        console.log('Expected text:', alignmentText);
+        var alignmentConfig = {
+            socketioEvents: {
+                emitAudioStream: 'alignAudioStream'
+            },
+            audioMetadata: {
+                text: alignmentText,
+            },
+        };
+        var alignmentButtonElement = $('#demo3 .myRecordSentenceButton');
+        var alignmentSuccessElement = $('#alignmentSuccess');
+        var alignmentRecorder = spoke.Recorder(alignmentButtonElement, alignmentConfig);
+        alignmentButtonElement.click(function (event) {
+            $(this).toggleClass('btn-primary btn-warning');
+        });
+        socket.on('result.spoke.alignment', function (result) {
+            console.log('Result from custom forced alignment:', result);
+            alignmentSuccessElement.removeClass('hidden');
+        });
+
+        /* Custom mispro  event handlers */
+        var misproText = spoke.utils.normalizeString($('#misproText').html());
+        console.log('Expected text:', misproText);
+        var misproConfig = {
+            socketioEvents: {
+                emitAudioStream: 'misproAudioStream'
+            },
+            audioMetadata: {
+                text: misproText,
+            },
+        };
+        var misproButtonElement = $('#demo4 .myRecordSentenceButton');
+        var misproSuccessElement = $('#misproSuccess');
+        var misproRecorder = spoke.Recorder(misproButtonElement, misproConfig);
+        misproButtonElement.click(function (event) {
+            $(this).toggleClass('btn-primary btn-warning');
+        });
+        socket.on('result.spoke.mispro', function (result) {
+            console.log('Result from custom mispro detection:', result);
+            misproSuccessElement.removeClass('hidden');
         });
 
         /* Player Test */
@@ -67,9 +122,10 @@ require(['jquery', 'spoke'],
 
 
         /* Recognizer Test */
+        /* TODO rename this Recognizer b/c wrapper around Google SR*/
         var recognizerButtonElement = $('.myRecognizeButton');
         var recognizerButtonColor = recognizerButtonElement.find('.stroked');
-        var resultsElement = $('.myRecognitionResults');
+        var resultsElement = $('#demo2 .myRecognitionResults');
         var recognizer = spoke.recognizer.Recognizer(recognizerButtonElement);
 
         recognizer.on('start.spoke.recognizer', function (event) {

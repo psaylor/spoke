@@ -3,7 +3,7 @@ var path = require('path');
 var http = require('http');
 var rr = require('ractive-render');
 
-var socketHandler = require('./appSocket');
+var socketHandler = require('./appSocketAsync');
 
 var app = express();
 

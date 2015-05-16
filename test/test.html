@@ -21,23 +21,54 @@
 <div class="container">
   <h1>Spoke Module Test</h1>
 
-  <h3>Audio Recording <span class="fa-stack align-bottom myVolumeMeter myRecordButton">
-    <i class="fa fa-microphone fa-stack-2x stroked stroked-blue"></i>
-    <i class="fa fa-microphone fa-stack-2x fill vol-adjust"></i>
-  </span></h3>
+  <h3 id="demo1">
+    Audio Recording &amp; Recognition 
+    <span class="fa-stack align-bottom myVolumeMeter myRecordButton">
+      <i class="fa fa-microphone fa-stack-2x stroked stroked-blue"></i>
+      <i class="fa fa-microphone fa-stack-2x fill vol-adjust"></i>
+    </span>
+    <small class="myRecognitionResults">
+    </small>
+  </h3>
 
-  <h3>
-    Speech Recognition 
+  <br>
+  <h3 id="demo2">
+    Google Speech Recognition 
     <span class="fa-stack align-bottom myVolumeMeter myRecognizeButton">
       <i class="fa fa-microphone fa-stack-2x stroked stroked-green"></i>
       <i class="fa fa-microphone fa-stack-2x fill vol-adjust"></i>
     </span>
     <small class="myRecognitionResults">
     </small>
-</h3>
+  </h3>
 
-  <div class="btn btn-lg btn-info myPlayBtn" data-playLength="short">Play Rain</div>
-  <div class="btn btn-lg btn-info myPlayBtn" data-playLength="long">Play Rain ++</div>
+  <br>
+  <div id="demo3">
+    <h3>Forced Alignment</h3>
+    <div class="btn btn-lg btn-primary myRecordSentenceButton">Record this text</div>
+      <span class="big-text" id="alignmentText">The north wind and the sun</span>
+      <span class="label label-success hidden" id="alignmentSuccess">Aligned!</span>
+  </div>
+
+  <br>
+  <div id="demo4">
+    <h3>Mispronunciation Detection</h3>
+    <div class="btn btn-lg btn-primary myRecordSentenceButton">Mispronounce this text</div>
+      <span class="big-text" id="misproText">At the park it was warm and sunny.</span>
+      <span class="label label-success hidden" id="misproSuccess">Aligned!</span>
+      
+  </div>
+
+  <br>
+  <div id="demo5">
+    <h3>Play Audio</h3>
+    <div class="btn btn-lg btn-info myPlayBtn" data-playLength="short">
+      Play Rain
+    </div>
+    <div class="btn btn-lg btn-info myPlayBtn" data-playLength="long">
+      Play Rain ++
+    </div>
+  </div>
 
 </div>  <!-- End of container div -->
 
