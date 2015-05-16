@@ -176,6 +176,10 @@ var socketHandler = function (server, app) {
                 .then(function resolve (result) {
                     socket.emit('result.spoke.mispro', result);
                 });
+
+            /*If no prints or socket emits are needed, you can just chain everything
+            with .call statements to provide a variable thisArg so it gets called properly
+            cannot call then with just the method name b/c this becomes undefined */
         });
 
         socket.on('playRequest', function (shortened) {
