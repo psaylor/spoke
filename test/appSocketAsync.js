@@ -160,21 +160,28 @@ var socketHandler = function (server, app) {
                 .then(function resolve (result) {
                     console.log('Alignment result:', result);
                     socket.emit('result.spoke.alignment', result);
-                    return mispro.processAsync(wavFilename);
+                    return mispro.preprocessAsync(wavFilename);
                 })
                 .catch(function reject (err) {
-                    console.log('Mispro process error:', err);
+                    console.log('Mispro preprocess error:', err);
                     socket.emit('error.spoke.mispro', err);
                 })
                 .then(function resolve (result) {
-                    console.log('Mispro processing finished with result', result);
-                    return mispro.misproDetectionAsync();
+                    console.log('Mispro preprocessing finished with result', result);
+                    var stdout = mispro.misproDetectionStream();
+                    var resultStream = mispro.getMisproResultsStream(stdout);
+                    return resultStream;
                 })
-                .catch(function reject (error) {
+                .catch(function reject (err) {
+                    console.log('reject mispro result', err);
                     socket.emit('error.spoke.mispro', err);
                 })
                 .then(function resolve (result) {
-                    socket.emit('result.spoke.mispro', result);
+                    console.log('resolve mispro result stream');
+                    result.on('data', function (data) {
+                        console.log('mispro data:', data);
+                        socket.emit('result.spoke.mispro', data);
+                    });
                 });
 
             /*If no prints or socket emits are needed, you can just chain everything
