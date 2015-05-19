@@ -17,7 +17,8 @@ it i* ih <eps>
 warm *a** aa <eps>
 ---WORD ENDS---
 ---WORD SUMMARY STARTS---
-was w** w <eps>
+## word star_pattern utterance_id word_id
+was w** 3 5
 it i* ih <eps>
 warm *a** aa <eps>
 ---WORD SUMMARY ENDS---
