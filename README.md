@@ -1,5 +1,5 @@
 # spoke
-Spoke server-side library that interfaces with custom speech technologies and provides a utility-belt of audio tools such as recording, transcoding, and playback. spoke can be used as a standalone processing library or in conjunction with [spoke-client][2] to build websites.
+Spoke server-side library that interfaces with custom speech technologies and provides a utility-belt of audio tools such as recording, transcoding, and playback. [spoke][1] can be used as a standalone processing library or in conjunction with [spoke-client][2] to build websites.
 
 # Spoke
 Spoke is a framework for building interactive speech-enabled web applications. It leverages modern web technologies such as the Web Audio APIs, WebSockets, and Node.js to provide a standardized and streamlined way to build website demos featuring one's own spoken language technologies on the backend. 
@@ -15,6 +15,8 @@ Spoke consists of two components (each their own project with github repo) that 
 For more on [spoke][1], keep reading. [spoke-client][2] is explained in more detail on its own page.
 
 ## Overview
+spoke, the server-side library of Spoke, provides modules of two types- audio utilities and speech technologies.
+
 
 [1]:https://github.com/psaylor/spoke "the spoke repo"
 [2]:https://github.com/psaylor/spoke-client "the spoke-client repo"
