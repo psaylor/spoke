@@ -12,6 +12,8 @@ Spoke consists of two components (each their own project with github repo) that 
 1. [spoke][1]: a Node.js server-side library with a set of modules that interface with a handful of custom speech technologies (such as speech recognition, forced alignment, and mispronunciation detection). 
 2. [spoke-client][2]: a JavaScript client-side library and framework with a set of tools for building front-end speech recognition websites (such as recording audio to a server, visualizing audio information, speech recognition through browser APIs).
 
+![Spoke module overview][Spoke_module_overview]
+
 For more on [spoke][1], keep reading. [spoke-client][2] is explained in more detail on its own page.
 
 ## Overview
@@ -24,3 +26,4 @@ spoke, the server-side library of Spoke, provides two types of modules-**audio u
 
 [1]:https://github.com/psaylor/spoke "the spoke repo"
 [2]:https://github.com/psaylor/spoke-client "the spoke-client repo"
+[Spoke_module_overview]: https://github.com/psaylor/spoke-client/blob/gh-pages/images/Spoke_module_overview.png "Spoke module overview"
