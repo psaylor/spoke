@@ -22,7 +22,7 @@ spoke, the server-side library of Spoke, provides two types of modules-**audio u
 The library’s **utilities** enable 
 * recording raw or wav audio
 * transcoding audio files or live audio streams
-* streaming audio from a saved file. 
+* streaming audio from a saved file, and more
 
 The library also provides standardized access to and usage of some **speech technologies** built in the lab, such as 
 * domain-specific speech recognizers
