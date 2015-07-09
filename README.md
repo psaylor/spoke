@@ -15,7 +15,7 @@ Spoke consists of two components (each their own project with github repo) that 
 For more on [spoke][1], keep reading. [spoke-client][2] is explained in more detail on its own page.
 
 ## Overview
-spoke, the server-side library of Spoke, provides modules of two types- **audio utilities** and **speech technologies**- geared towards building a speech processing backend for a server, but the library can also be used for offline scripting and batch processing. As a library, not a framework, it is up to the developer to listen for client events and then decide which pieces of the library to use. The library’s utilities enable recording raw or wav audio, transcoding audio files or live audio streams, and streaming audio from a saved file. The library also provides standardized access to and usage of some speech technologies built in the lab, such as 
+spoke, the server-side library of Spoke, provides modules of two types-**audio utilities** and **speech technologies**-geared towards building a speech processing backend for a server, but the library can also be used for offline scripting and batch processing. As a library, not a framework, it is up to the developer to listen for client events and then decide which pieces of the library to use. The library’s utilities enable recording raw or wav audio, transcoding audio files or live audio streams, and streaming audio from a saved file. The library also provides standardized access to and usage of some speech technologies built in the lab, such as 
 * domain-specific speech recognizers
 * forced alignment of an audio sample to expected text
 * mispronunciation detection on a set of utterances from the same speaker
