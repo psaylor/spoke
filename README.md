@@ -19,9 +19,9 @@ $ npm update
 ```
 
 # Spoke
-Spoke is a framework for building interactive speech-enabled web applications. It leverages modern web technologies such as the Web Audio APIs, WebSockets, and Node.js to provide a standardized and streamlined way to build website demos featuring one's own spoken language technologies on the backend. 
+Spoke is a framework for building interactive speech-enabled web applications. It leverages modern web technologies such as the [Node.js][node], [Web Audio APIs][web-audio], and [socket.io] ([WebSockets]), and  to provide a standardized and streamlined way to build website demos featuring one's own spoken language technologies on the backend. 
 
-Though Spoke was designed with the needs of the MIT Spoken Language Systems group in mind, it could easily be adopted by other researchers and developers hoping to incorporate their own speech technologies into functional websites.
+Though Spoke was designed with the needs of the [MIT Spoken Language Systems group][sls] in mind, it could easily be adopted by other researchers and developers hoping to incorporate their own speech technologies into functional websites.
 
 
 Spoke consists of two components (each their own project with github repo) that should be used in conjunction to build web applications:
@@ -144,7 +144,91 @@ recorder.convertAndSaveAsync(rawAudioStream, wavFilename)
     // Optionally process using a speech technology
   });
 ```
+
 ### Player
+The [Player module][player.js] handles creating an audio stream for all or part of one or more saved audio files. For complex cases, the Player uses [SoxCommands][sox-audio] for audio trimming and concatenation. Given a wav input (file or stream) and the start sample and end sample of the desired section, the Player builds a SoxCommand that cuts the audio at the specified samples and pipes out only the desired section to a provided stream. Similarly, a list of wav files can be trimmed and concatenated such that the resulting audio stream starts at the specified start sample of the first file and ends at the specified end sample of the last file in the list, with intervening files included in their entirety. The Player is primarily used to enable audio streaming (of selected or recently recorded audio) from the server to the client.
+
+The Player is designed to accept configuration options at initialization and fill in default values, however no configuration parameters or defaults are currently used or needed (but some could be added easily).
+
+
+#### Recorder Defaults and Configuration
+```js
+Recorder.DEFAULTS = {
+    /* Default input configuration for raw input */
+    inputEncoding: 'signed',
+    inputBits: 16,
+    inputChannels: 1,
+    inputSampleRate: 44100,
+
+    /* Default output configuration */
+    outputFileType: 'wav',
+    outputSampleRate: 16000,
+};
+```
+Any of these properties can be configured when you initialize a new Recorder object and then they apply to all of the recorder's methods. The properties specifying information about the input or output audio are passed directly into a [SoxCommand][sox-audio], so you can read the [sox-audio] docs or [sox] docs to learn more about these properties and appropriate values for them.
+
+These defaults fit most situations, but say you are recording a wav stream with a sample rate of 48 kHz and you want to downsample it to 8 kHz, then you can configure your recorder as follows:
+```js
+var Spoke = require('spoke');
+var recOptions = {
+  inputSampleRate: 48000,
+  outputSampleRate: 8000,
+}; 
+var recorder = new Spoke.Recorder(recOptions);
+```
+
+#### Recorder Methods
+* __`convertAndSave(rawInputAudio, outputAudio, cb)`__: Converts inputAudio, a raw audio file or raw audio stream, to outputFileType format with sample rate outputSampleRate (from options, defaults to a 16kHz wav format). You can provide a callback which will get passed an error if there was one, or the result if successful: cb(err, result). Returns this Recorder instance for chaining.
+* __`convertAndSaveAsync(rawInputAudio, outputAudio)`__: Converts inputAudio, a raw audio file or raw audio stream, to outputFileType format with sample rate outputSampleRate (from options, defaults to a 16kHz wav format). Returns a Promise which will be fulfilled with the outputAudio stream or file upon completion, or rejected with the SoxCommand error upon failure.
+* __`saveRaw(rawAudioStream, filename, cb)`__: Saves the provided raw audio stream to filename. You can provide a callback which will get passed an error if there was one, or the result if successful: cb(err, result). Returns this Recorder instance for chaining.
+* __`saveRawAsync(rawAudioStream, filename)`__: Saves the provided raw audio stream to filename.eturns a Promise which will be fulfilled with the filename of the saved file upon completion, or rejected with the SoxCommand error upon failure.
+
+#### Recording with Callbacks
+```js
+var Spoke = require('spoke');
+var recorder = new Spoke.Recorder();
+var rawFilename = 'input.raw';
+var wavFilename = 'input.wav';
+
+var callback1 = function () {
+  console.log('Raw audio saved asynchronously');
+};
+recorder.saveRaw(stream, rawFilename, callback1);
+
+var callback2 = function (err, savedFilename) {
+  if (err) {
+    console.log('Error converting the raw to a wav');
+    return;
+  }
+  console.log('Recording completed:', savedFilename);
+  // Optionally process using a speech technology
+};
+recorder.convertAndSave(stream, wavFilename, callback2);
+```
+
+#### Recording with Promises
+```js
+var Spoke = require('spoke');
+var recorder = new Spoke.Recorder();
+var rawFilename = 'input.raw';
+var wavFilename = 'input.wav';
+
+// Save the raw audio stream as is
+recorder.saveRawAsync(rawAudioStream, rawFilename)
+  .then(function () {
+    console.log('Raw audio saved asynchronously with Promises');
+  });
+  
+// Convert the incoming raw audio stream to a wav file and save it
+recorder.convertAndSaveAsync(rawAudioStream, wavFilename)
+  .catch(function reject (err) {
+    console.log('Error converting the raw to a wav');
+  })
+  .then(function resolve (savedFilename) {
+    console.log('Recording completed:', savedFilename);
+    // Optionally process using a speech technology
+  });
+```
 
 ## Integrated Speech Technologies
 
@@ -157,8 +241,14 @@ recorder.convertAndSaveAsync(rawAudioStream, wavFilename)
 [sox-audio]:https://github.com/psaylor/sox-audio "the sox-audio repo"
 [sox]:http://sox.sourceforge.net/sox.html "SoX-the Swiss Army knife of audio manipulation"
 [npm]:https://www.npmjs.com/ "npm registry"
+[WebSockets]:https://developer.mozilla.org/en-US/docs/WebSockets "WebSockets docs on MDN"
+[socket.io]:http://socket.io/docs/ "socket.io docs"
+[web-audio]:https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API "Web Audio API docs on MDN"
+[node]:https://nodejs.org "node.js"
 [3]:https://nodejs.org/api/child_process.html "node.js child process docs"
 [4]:https://www.promisejs.org/ "explanation of Promises"
 [utils.js]:https://github.com/psaylor/spoke/blob/master/lib/utils.js
 [recorder.js]:https://github.com/psaylor/spoke/blob/master/lib/recorder.js
+[player.js]:https://github.com/psaylor/spoke/blob/master/lib/player.js
 [Spoke_module_overview]: https://github.com/psaylor/spoke-client/blob/gh-pages/images/Spoke_module_overview.png "Spoke module overview"
+[sls]:https://groups.csail.mit.edu/sls/ "MIT SLS Homepage"
