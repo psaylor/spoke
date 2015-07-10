@@ -88,6 +88,12 @@ var recOptions = {
 var recorder = new Spoke.Recorder(recOptions);
 ```
 
+#### Recorder Methods
+* __convertAndSave(rawInputAudio, outputAudio, cb)__: Converts inputAudio, a raw audio file or raw audio stream, to outputFileType format with sample rate outputSampleRate (from options, defaults to a 16kHz wav format). You can provide a callback which will get passed an error if there was one, or the result if successful: cb(err, result). Returns this Recorder instance for chaining.
+* __convertAndSaveAsync(rawInputAudio, outputAudio)__: Converts inputAudio, a raw audio file or raw audio stream, to outputFileType format with sample rate outputSampleRate (from options, defaults to a 16kHz wav format). Returns a Promise which will be fulfilled with the outputAudio stream or file upon completion, or rejected with the SoxCommand error upon failure.
+* __saveRaw(rawAudioStream, filename, cb)__: Saves the provided raw audio stream to filename. You can provide a callback which will get passed an error if there was one, or the result if successful: cb(err, result). Returns this Recorder instance for chaining.
+* __saveRawAsync(rawAudioStream, filename)__: Saves the provided raw audio stream to filename.eturns a Promise which will be fulfilled with the filename of the saved file upon completion, or rejected with the SoxCommand error upon failure.
+
 #### Recording with Callbacks
 ```js
 var Spoke = require('spoke');
