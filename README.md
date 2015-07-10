@@ -13,9 +13,9 @@ Open your project's package.json file and add a dependency on spoke, linking to 
 ```
 Then in your terminal you will want to run an update to complete the install
 ```bash
-npm install
+$ npm install
 # or
-npm update
+$ npm update
 ```
 
 # Spoke
