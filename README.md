@@ -170,7 +170,10 @@ io.on('connection', function (socket) {
     var wavFilename = recordingsDir + '/rec_' + recordingNum + '.wav';
     
     recorder.saveRawAsync(stream, rawFilename);
-    recorder.convertAndSaveAsync(stream, wavFilename);
+    recorder.convertAndSaveAsync(stream, wavFilename)
+      .then(function (wavFilename) {
+        // Optional processing of the just-saved wav file with speech technologies
+      });
   });
 });
 
