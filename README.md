@@ -62,7 +62,33 @@ The [Recorder module][recorder.js] records audio from a raw input stream to a fi
 
 At initialization, the Recorder can be configured with information about the raw input streams it will be handling, such as their bit depth and sample rate, and with the desired sample rate for converted wav files. The crucial method is convertAndSave, which accepts a raw audio file or raw audio stream and a wav file or stream for outputting the transcoded results; transcoding is carried out with a SoxCommand built from the method’s parameters for input and output streams or files and the Recorder configuration for sample rates, etc.  For offline processing, this can be used to transcode already saved raw files to wav files. More interestingly, as part of a web backend, this can be used to perform streaming transcoding of a raw stream to a wav stream, which could start being processed before all the audio has been received if a speech technology accepted streaming audio. As it is, all of them currently accept only saved wav files, but this should change over the next year.
 
-**Recording with Callbacks**
+#### Recorder Defaults and Configuration
+```js
+Recorder.DEFAULTS = {
+    /* Default input configuration for raw input */
+    inputEncoding: 'signed',
+    inputBits: 16,
+    inputChannels: 1,
+    inputSampleRate: 44100,
+
+    /* Default output configuration */
+    outputFileType: 'wav',
+    outputSampleRate: 16000,
+};
+```
+Any of these properties can be configured when you initialize a new Recorder object and then they apply to all of the recorder's methods. The properties specifying information about the input or output audio are passed directly into a [SoxCommand][sox-audio], so you can read the [sox-audio] docs or [sox] docs to learn more about these properties and appropriate values for them.
+
+These defaults fit most situations, but say you are recording a wav stream with a sample rate of 48 kHz and you want to downsample it to 8 kHz, then you can configure your recorder as follows:
+```js
+var Spoke = require('spoke');
+var recOptions = {
+  inputSampleRate: 48000,
+  outputSampleRate: 8000,
+}; 
+var recorder = new Spoke.Recorder(recOptions);
+```
+
+#### Recording with Callbacks
 ```js
 var Spoke = require('spoke');
 var recorder = new Spoke.Recorder();
@@ -85,7 +111,7 @@ var callback2 = function (err, savedFilename) {
 recorder.convertAndSave(stream, wavFilename, callback2);
 ```
 
-**Recording with Promises**
+#### Recording with Promises
 ```js
 var Spoke = require('spoke');
 var recorder = new Spoke.Recorder();
