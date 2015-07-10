@@ -36,9 +36,12 @@ It is important to note that any technology that has a command line interface ca
 Each module employs prototype-based object-oriented programming to export one object providing a clean interface to a tool or technology. Under the hood, all of these modules operate by running a command in a new process, though the utility modules do this indirectly through the [SoxCommand][sox-audio] interface. In Node’s single-threaded model, asynchronously creating these new processes is essential, allowing the developer to spin up a long running process and then wait for a callback; Node provides a [child_process module][3] to accomplish exactly this.  Callbacks are the standard Node.js way, but they are not always the best way for handling asynchronous control flow when multiple asynchronous steps need to be chained together. In this case, the preferred option is that the command execution method returns a [Promise][4] instead of calling a callback, since Promises can easily be chained to create a sequential pipeline of asynchronous tasks . Each module in the library supports both styles, callback-based and Promise-based, leaving it to the developer’s discretion for her particular case. 
 
 ## Audio Utilities
-spoke provides a utility-belt of audio tools that complement its speech technologies with support for recording audio streams to a file, creating audio streams from a file, and building arbitrarily complex [SoX][sox] commands that will be run in a new process. This last piece is enabled by [sox-audio], a Node.js package that, independent of Spoke, is useful for the community of Node.js developers, so it was released as a standalone package on [NPM][npm]. The Recorder and Player modules then use [sox-audio] to do most of the heavy lifting.
-### SoxCommand
+spoke provides a utility-belt of audio tools that complement its speech technologies with support for recording audio streams to a file, creating audio streams from a file, and building arbitrarily complex [SoX][sox] commands that will be run in a new process. This last piece is enabled by [sox-audio], a Node.js package that, independent of Spoke, is useful for the community of Node.js developers, so it was released as a [standalone package][https://www.npmjs.com/package/sox-audio] on [NPM][npm]. The Recorder and Player modules then use [sox-audio] to do most of the heavy lifting.
+### Utils
+[utils.js] provides a few general-purpose helper functions that were useful for building Spoke websites, but it is by no means exhaustive. So far it simplifies parsing an XML file and normalizing strings to remove certain punctuation and make it lowercase. This module should be extended as more developers use spoke and find themselves using a general-purpose function in a few places to reduce code redundancy.
+
 ### Recorder
+[recorder.js] 
 ### Player
 
 ## Integrated Speech Technologies
@@ -54,4 +57,6 @@ spoke provides a utility-belt of audio tools that complement its speech technolo
 [npm]:https://www.npmjs.com/ "npm registry"
 [3]:https://nodejs.org/api/child_process.html "node.js child process docs"
 [4]:https://www.promisejs.org/ "explanation of Promises"
+[utils.js]:https://github.com/psaylor/spoke/blob/master/lib/utils.js
+[recorder.js]:https://github.com/psaylor/spoke/blob/master/lib/recorder.js
 [Spoke_module_overview]: https://github.com/psaylor/spoke-client/blob/gh-pages/images/Spoke_module_overview.png "Spoke module overview"
