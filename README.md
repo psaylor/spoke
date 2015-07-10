@@ -11,6 +11,12 @@ Open your project's package.json file and add a dependency on spoke, linking to 
     ...
   }
 ```
+Then in your terminal you will want to run an update to complete the install
+```bash
+npm install
+# or
+npm update
+```
 
 # Spoke
 Spoke is a framework for building interactive speech-enabled web applications. It leverages modern web technologies such as the Web Audio APIs, WebSockets, and Node.js to provide a standardized and streamlined way to build website demos featuring one's own spoken language technologies on the backend. 
