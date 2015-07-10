@@ -1,6 +1,17 @@
 # spoke
 The spoke project is Spoke's server-side library that interfaces with custom speech technologies and provides a utility-belt of audio tools such as recording, transcoding, and playback. [spoke][1] can be used as a standalone processing library or in conjunction with [spoke-client][2] to build websites.
 
+## Installation
+Prerequisites: You must have Node.js and NPM already installed. As well, for the audio conversions to work properly, you must have SoX installed on the server where spoke will be running.
+Open your project's package.json file and add a dependency on spoke, linking to this github repo:
+```js
+  "dependencies": {
+    ...
+    "spoke": "git://github.com/psaylor/spoke",
+    ...
+  }
+```
+
 # Spoke
 Spoke is a framework for building interactive speech-enabled web applications. It leverages modern web technologies such as the Web Audio APIs, WebSockets, and Node.js to provide a standardized and streamlined way to build website demos featuring one's own spoken language technologies on the backend. 
 
@@ -41,8 +52,14 @@ spoke provides a utility-belt of audio tools that complement its speech technolo
 [utils.js] provides a few general-purpose helper functions that were useful for building Spoke websites, but it is by no means exhaustive. So far it simplifies parsing an XML file and normalizing strings to remove certain punctuation and make it lowercase. This module should be extended as more developers use spoke and find themselves using a general-purpose function in a few places to reduce code redundancy.
 
 ### Recorder
-The [Recorder module][recorder.js] records audio from a raw input stream to a file, either in the original raw format or in an optionally downsampled wav format. This is primarily used to enable live audio recording on the web
+The [Recorder module][recorder.js] records audio from a raw input stream to a file, either in the original raw format or in an optionally downsampled wav format. This is primarily used to enable live audio recording on the web for collection and/or subsequent processing with one of the speech technologies.
 
+At initialization, the Recorder can be configured with information about the raw input streams it will be handling, such as their bit depth and sample rate, and with the desired sample rate for converted wav files. The crucial method is convertAndSave, which accepts a raw audio file or raw audio stream and a wav file or stream for outputting the transcoded results; transcoding is carried out with a SoxCommand built from the method’s parameters for input and output streams or files and the Recorder configuration for sample rates, etc.  For offline processing, this can be used to transcode already saved raw files to wav files. More interestingly, as part of a web backend, this can be used to perform streaming transcoding of a raw stream to a wav stream, which could start being processed before all the audio has been received if a speech technology accepted streaming audio. As it is, all of them currently accept only saved wav files, but this should change over the next year.
+
+```js
+var Spoke = require('spoke');
+
+```
 ### Player
 
 ## Integrated Speech Technologies
