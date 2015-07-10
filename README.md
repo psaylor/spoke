@@ -99,7 +99,7 @@ var recorder = new Spoke.Recorder(recOptions);
 * __`saveRawAsync(rawAudioStream, filename)`__: Saves the provided raw audio stream to filename.eturns a Promise which will be fulfilled with the filename of the saved file upon completion, or rejected with the SoxCommand error upon failure.
 
 #### Recorder Usage
-The [Recorder][recorder.js] module is primarily used to enable live audio recording on the web over [socket.io]. Then the saved audio can be immediately processed with one of the speech technologies or stored for later analysis.
+The [Recorder][recorder.js] module is primarily used to enable live audio recording on the web over [socket.io]. Then the saved audio can be immediately processed with one of the speech technologies or stored for later analysis. Here are some examples of how to setup and use a new Recorder instance either using callbacks or Promises, and an example of how to use the Recorder module alongside socket.io for audio recording.
 
 ##### Recording with Callbacks
 ```js
@@ -149,16 +149,31 @@ recorder.convertAndSaveAsync(rawAudioStream, wavFilename)
 ```
 
 ##### Recording with Socket.io
-[socket.io] itself does not implement binary streaming, but [socket.io-stream] takes care of this, providing a wrapper around the socket.io object on both the client-side and the server-side.
+[socket.io] itself does not implement binary streaming, but [socket.io-stream] takes care of this, providing a wrapper around the socket.io object on both the client-side and the server-side. [socket.io] pairs well with [express.js], which we have used here. For a full code example, please refer to the [test directory][test], particularly testApp.js and appSocket.js for callback-based setup, and testAppAsync.js and appSocketAsync.js for Promise-based setup.
+
+
 
 ```js
 var socketIO = require('socket.io');
 var ss = require('socket.io-stream');
-var fs = require('fs');
-var path = require('path');
-var util = require('util');
+var Spoke = require('spoke');
 
-var Spoke = require('../index');
+var io = socketIO(server);
+/*
+  Create a new Recorder instance for each client that connects. Save each client's stream as a raw file and a wav file with incrementing recording numbers.
+*/
+io.on('connection', function (socket) {
+  var recorder = new Spoke.Recorder();
+  var recordingNum = 0;
+  ss(socket).on('audioStream', function (stream, data) {
+    var rawFilename = recordingsDir + '/rec_' + recordingNum + '.raw';
+    var wavFilename = recordingsDir + '/rec_' + recordingNum + '.wav';
+    
+    recorder.saveRawAsync(stream, rawFilename);
+    recorder.convertAndSaveAsync(stream, wavFilename);
+  });
+});
+
 ```
 
 
@@ -245,3 +260,30 @@ recorder.convertAndSaveAsync(rawAudioStream, wavFilename)
 [player.js]:https://github.com/psaylor/spoke/blob/master/lib/player.js
 [Spoke_module_overview]: https://github.com/psaylor/spoke-client/blob/gh-pages/images/Spoke_module_overview.png "Spoke module overview"
 [sls]:https://groups.csail.mit.edu/sls/ "MIT SLS Homepage"
+[test]:https://github.com/psaylor/spoke/tree/master/test
+[express.js]:http://expressjs.com/
+
+##### Recording with Socket.io
+[socket.io] itself does not implement binary streaming, but [socket.io-stream] takes care of this, providing a wrapper around the socket.io object on both the client-side and the server-side. [socket.io] pairs well with [express.js], which we have used here. For a full code example, please refer to the [test directory][test], particularly testApp.js and appSocket.js for callback-based setup, and testAppAsync.js and appSocketAsync.js for Promise-based setup.
+
+In this example
+
+```js
+var express = require('express');
+var http = require('http');
+var socketIO = require('socket.io');
+var ss = require('socket.io-stream');
+var Spoke = require('spoke');
+// other imports
+
+var app = express();
+app.set('port', 3000);
+// other app configurations
+var server = http.createServer(app);
+
+var io = socketIO(server);
+io.on('connection', function (socket) {
+  var player = new Spoke.Player();
+});
+
+```
