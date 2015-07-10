@@ -98,7 +98,10 @@ var recorder = new Spoke.Recorder(recOptions);
 * __`saveRaw(rawAudioStream, filename, cb)`__: Saves the provided raw audio stream to filename. You can provide a callback which will get passed an error if there was one, or the result if successful: cb(err, result). Returns this Recorder instance for chaining.
 * __`saveRawAsync(rawAudioStream, filename)`__: Saves the provided raw audio stream to filename.eturns a Promise which will be fulfilled with the filename of the saved file upon completion, or rejected with the SoxCommand error upon failure.
 
-#### Recording with Callbacks
+#### Recorder Usage
+The [Recorder][recorder.js] module is primarily used to enable live audio recording on the web over [socket.io]. Then the saved audio can be immediately processed with one of the speech technologies or stored for later analysis.
+
+##### Recording with Callbacks
 ```js
 var Spoke = require('spoke');
 var recorder = new Spoke.Recorder();
@@ -121,7 +124,7 @@ var callback2 = function (err, savedFilename) {
 recorder.convertAndSave(stream, wavFilename, callback2);
 ```
 
-#### Recording with Promises
+##### Recording with Promises
 ```js
 var Spoke = require('spoke');
 var recorder = new Spoke.Recorder();
@@ -145,45 +148,35 @@ recorder.convertAndSaveAsync(rawAudioStream, wavFilename)
   });
 ```
 
+##### Recording with Socket.io
+[socket.io] itself does not implement binary streaming, but [socket.io-stream] takes care of this, providing a wrapper around the socket.io object on both the client-side and the server-side.
+
+```js
+var socketIO = require('socket.io');
+var ss = require('socket.io-stream');
+var fs = require('fs');
+var path = require('path');
+var util = require('util');
+
+var Spoke = require('../index');
+```
+
+
+
 ### Player
 The [Player module][player.js] handles creating an audio stream for all or part of one or more saved audio files. For complex cases, the Player uses [SoxCommands][sox-audio] for audio trimming and concatenation. Given a wav input (file or stream) and the start sample and end sample of the desired section, the Player builds a SoxCommand that cuts the audio at the specified samples and pipes out only the desired section to a provided stream. Similarly, a list of wav files can be trimmed and concatenated such that the resulting audio stream starts at the specified start sample of the first file and ends at the specified end sample of the last file in the list, with intervening files included in their entirety. The Player is primarily used to enable audio streaming (of selected or recently recorded audio) from the server to the client.
 
 The Player is designed to accept configuration options at initialization and fill in default values, however no configuration parameters or defaults are currently used or needed (but some could be added easily).
 
+#### Player Methods
+* __`trimAudio(wavInput, outputPipe, startSample, endSample, cb)`__: Trims a wav input (file or stream) to only the desired section between startSample and endSample and pipes the trimmed audio to the provided outputPipe. You can provide a callback which will get passed an error if there was one, or the outputPipe if successful: cb(err, result). Returns this Player instance for chaining.
+* __`trimAudioAsync(wavInput, outputPipe, startSample, endSample)`__: Trims a wav input (file or stream) to only the desired section between startSample and endSample and pipes the trimmed audio to the provided outputPipe. Returns a Promise which will be fulfilled with the outputPipe upon successful completion of the audio trimming, or rejected with the SoxCommand error upon failure.
+* __`stream(audioInputFile, outputPipe)`__: Creates an audio stream for a saved audio file (audioInputFile). If an outputPipe is provided, the audio stream is piped onto outputPipe; otherwise the audio stream is returned to the caller.
+* __`trimAndConcatAudio(wavInputs, outputPipe, startSample, endSample, cb)`__: Trims and concatenates a list of wav files such that the resulting audio stream starts at the specified startSample of the first wavInput and ends at the specified endSample of the last wavInput, with intervening files included in their entirety. You can provide a callback which will get passed an error if there was one, or the outputPipe if successful: cb(err, result). Returns this Player instance for chaining.
 
-#### Recorder Defaults and Configuration
-```js
-Recorder.DEFAULTS = {
-    /* Default input configuration for raw input */
-    inputEncoding: 'signed',
-    inputBits: 16,
-    inputChannels: 1,
-    inputSampleRate: 44100,
-
-    /* Default output configuration */
-    outputFileType: 'wav',
-    outputSampleRate: 16000,
-};
-```
-Any of these properties can be configured when you initialize a new Recorder object and then they apply to all of the recorder's methods. The properties specifying information about the input or output audio are passed directly into a [SoxCommand][sox-audio], so you can read the [sox-audio] docs or [sox] docs to learn more about these properties and appropriate values for them.
-
-These defaults fit most situations, but say you are recording a wav stream with a sample rate of 48 kHz and you want to downsample it to 8 kHz, then you can configure your recorder as follows:
-```js
-var Spoke = require('spoke');
-var recOptions = {
-  inputSampleRate: 48000,
-  outputSampleRate: 8000,
-}; 
-var recorder = new Spoke.Recorder(recOptions);
-```
-
-#### Recorder Methods
-* __`convertAndSave(rawInputAudio, outputAudio, cb)`__: Converts inputAudio, a raw audio file or raw audio stream, to outputFileType format with sample rate outputSampleRate (from options, defaults to a 16kHz wav format). You can provide a callback which will get passed an error if there was one, or the result if successful: cb(err, result). Returns this Recorder instance for chaining.
-* __`convertAndSaveAsync(rawInputAudio, outputAudio)`__: Converts inputAudio, a raw audio file or raw audio stream, to outputFileType format with sample rate outputSampleRate (from options, defaults to a 16kHz wav format). Returns a Promise which will be fulfilled with the outputAudio stream or file upon completion, or rejected with the SoxCommand error upon failure.
-* __`saveRaw(rawAudioStream, filename, cb)`__: Saves the provided raw audio stream to filename. You can provide a callback which will get passed an error if there was one, or the result if successful: cb(err, result). Returns this Recorder instance for chaining.
-* __`saveRawAsync(rawAudioStream, filename)`__: Saves the provided raw audio stream to filename.eturns a Promise which will be fulfilled with the filename of the saved file upon completion, or rejected with the SoxCommand error upon failure.
-
-#### Recording with Callbacks
+#### Usage
+The [Player][player.js] module is primarily used for streaming audio from the server to the client over [socket.io].
+#### Playing with Callbacks
 ```js
 var Spoke = require('spoke');
 var recorder = new Spoke.Recorder();
