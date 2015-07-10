@@ -41,7 +41,8 @@ spoke provides a utility-belt of audio tools that complement its speech technolo
 [utils.js] provides a few general-purpose helper functions that were useful for building Spoke websites, but it is by no means exhaustive. So far it simplifies parsing an XML file and normalizing strings to remove certain punctuation and make it lowercase. This module should be extended as more developers use spoke and find themselves using a general-purpose function in a few places to reduce code redundancy.
 
 ### Recorder
-[recorder.js] 
+The [Recorder module][recorder.js] records audio from a raw input stream to a file, either in the original raw format or in an optionally downsampled wav format. This is primarily used to enable live audio recording on the web
+
 ### Player
 
 ## Integrated Speech Technologies
