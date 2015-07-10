@@ -2,7 +2,7 @@
 The spoke project is Spoke's server-side library that interfaces with custom speech technologies and provides a utility-belt of audio tools such as recording, transcoding, and playback. [spoke][1] can be used as a standalone processing library or in conjunction with [spoke-client][2] to build websites.
 
 ## Installation
-Prerequisites: You must have Node.js and NPM already installed. As well, for the audio conversions to work properly, you must have SoX installed on the server where spoke will be running.
+Prerequisites: You must have [Node.js][node] and [NPM][npm] already installed. As well, for the audio conversions to work properly, you must have the [SoX][sox] command line utilities installed on the server where spoke will be running and added to its PATH.
 Open your project's package.json file and add a dependency on spoke, linking to this github repo:
 ```js
   "dependencies": {
@@ -19,7 +19,7 @@ $ npm update
 ```
 
 # Spoke
-Spoke is a framework for building interactive speech-enabled web applications. It leverages modern web technologies such as the [Node.js][node], [Web Audio APIs][web-audio], and [socket.io] ([WebSockets]), and  to provide a standardized and streamlined way to build website demos featuring one's own spoken language technologies on the backend. 
+Spoke is a framework for building interactive speech-enabled web applications. It leverages modern web technologies such as [Node.js][node], [Web Audio APIs][web-audio], [socket.io], and [WebSockets], and  to provide a standardized and streamlined way to build website demos featuring one's own spoken language technologies on the backend. 
 
 Though Spoke was designed with the needs of the [MIT Spoken Language Systems group][sls] in mind, it could easily be adopted by other researchers and developers hoping to incorporate their own speech technologies into functional websites.
 
