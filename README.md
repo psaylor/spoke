@@ -12,7 +12,7 @@ Open your project's package.json file and add a dependency on spoke, linking to 
   }
 ```
 Then in your terminal you will want to run an update to complete the install
-```bash
+```sh
 $ npm install
 # or
 $ npm update
@@ -62,9 +62,51 @@ The [Recorder module][recorder.js] records audio from a raw input stream to a fi
 
 At initialization, the Recorder can be configured with information about the raw input streams it will be handling, such as their bit depth and sample rate, and with the desired sample rate for converted wav files. The crucial method is convertAndSave, which accepts a raw audio file or raw audio stream and a wav file or stream for outputting the transcoded results; transcoding is carried out with a SoxCommand built from the method’s parameters for input and output streams or files and the Recorder configuration for sample rates, etc.  For offline processing, this can be used to transcode already saved raw files to wav files. More interestingly, as part of a web backend, this can be used to perform streaming transcoding of a raw stream to a wav stream, which could start being processed before all the audio has been received if a speech technology accepted streaming audio. As it is, all of them currently accept only saved wav files, but this should change over the next year.
 
+**Recording with Callbacks**
 ```js
 var Spoke = require('spoke');
+var recorder = new Spoke.Recorder();
+var rawFilename = 'input.raw';
+var wavFilename = 'input.wav';
 
+var callback1 = function () {
+  console.log('Raw audio saved asynchronously');
+};
+recorder.saveRaw(stream, rawFilename, callback1);
+
+var callback2 = function (err, savedFilename) {
+  if (err) {
+    console.log('Error converting the raw to a wav');
+    return;
+  }
+  console.log('Recording completed:', savedFilename);
+  // Optionally process using a speech technology
+};
+recorder.convertAndSave(stream, wavFilename, callback2);
+```
+
+**Recording with Promises**
+```js
+var Spoke = require('spoke');
+var recorder = new Spoke.Recorder();
+var rawFilename = 'input.raw';
+var wavFilename = 'input.wav';
+
+// Save the raw audio stream as is
+recorder.saveRawAsync(rawAudioStream, rawFilename)
+  .then(function () {
+    console.log('Raw audio saved asynchronously with Promises');
+  });
+  
+// Convert the incoming raw audio stream to a wav file and save it
+recorder.convertAndSaveAsync(rawAudioStream, wavFilename)
+  .catch(function reject (err) {
+    console.log('Error converting the raw to a wav');
+  })
+  .then(function resolve (savedFilename) {
+    console.log('Recording completed:', savedFilename);
+    // Optionally process using a speech technology
+  });
 ```
 ### Player
 
